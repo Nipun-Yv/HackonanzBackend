@@ -19,11 +19,7 @@ const db=new pg.Client({
   }
 })
 db.connect();
-app.use(cors({
-    origin: 'https://neon-daffodil-f8e930.netlify.app',  
-    methods: ['GET', 'POST'],          
-    credentials: true                  
-  }));
+app.use(cors());
 app.use(express.json())
 app.listen(port,(req,res)=>{
     console.log("Working")
