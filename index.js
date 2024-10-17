@@ -11,6 +11,7 @@ const user = process.env.PGUSER;
 const password = process.env.PGPASSWORD;
 const database = process.env.PGDATABASE;
 const connectionString = `postgresql://${user}:${password}@${host}:${port1}/${database}`;
+const port=process.env.PORT||3000
 const db=new pg.Client({
   connectionString: connectionString,
   ssl: {
@@ -19,12 +20,12 @@ const db=new pg.Client({
 })
 db.connect();
 app.use(cors({
-    origin: 'http://localhost:5173',  
+    origin: 'https://neon-daffodil-f8e930.netlify.app',  
     methods: ['GET', 'POST'],          
     credentials: true                  
   }));
 app.use(express.json())
-app.listen(3000,(req,res)=>{
+app.listen(port,(req,res)=>{
     console.log("Working")
 })
 app.get("/",(req,res)=>{
