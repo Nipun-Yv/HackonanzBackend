@@ -3,6 +3,7 @@ import {google} from "googleapis"
 import cors from "cors"
 import dotenv from "dotenv"
 import pg from "pg"
+import { auth } from 'express-oauth2-jwt-bearer';
 dotenv.config()
 const app=express();
 const host = process.env.PGHOST;
@@ -18,10 +19,16 @@ const db=new pg.Client({
     rejectUnauthorized: false
   }
 })
-const corsOptions = {
-    origin: '*', // Allow all origins
-  };
-  app.use(cors(corsOptions));
+
+const jwtCheck = auth({
+  audience: 'uniqueident',
+  issuerBaseURL: 'https://dev-2jarn8jnr20lwuql.us.auth0.com/',
+  tokenSigningAlg: 'RS256'
+});
+const corsOptions={
+    origin:"*"
+}
+app.use(cors(corsOptions));
 db.connect();
 app.use(express.json())
 app.listen(port,(req,res)=>{
@@ -102,6 +109,7 @@ app.post('/generatelink', async (req, res) => {
   catch(err){console.log(err)}
   res.send(link)
 });
+
 async function createMeetLink() {
   const calendar = google.calendar({ version: 'v3', auth: oauth2Client });
   const event = {
