@@ -18,8 +18,11 @@ const db=new pg.Client({
     rejectUnauthorized: false
   }
 })
+const corsOptions = {
+    origin: '*', // Allow all origins
+  };
+  app.use(cors(corsOptions));
 db.connect();
-app.use(cors());
 app.use(express.json())
 app.listen(port,(req,res)=>{
     console.log("Working")
